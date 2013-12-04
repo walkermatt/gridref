@@ -4,10 +4,10 @@ Convert an alpha numeric Ordnance Survey grid reference to easting and northing.
 
 Valid input includes:
 
-ST => The bottom right coordinate of the ST grid square
-NN1665071250 => The easting and northing of Ben Nevis
-SU387148 => The Ordnance Survey offices in Southampton
-TQ336805 => The Tower of London
+    ST           => The bottom right coordinate of the ST grid square
+    NN1665071250 => The easting and northing of Ben Nevis
+    SU387148     => The Ordnance Survey offices in Southampton
+    TQ336805     => The Tower of London
 
 ## Build
 
