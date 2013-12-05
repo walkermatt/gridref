@@ -47,7 +47,8 @@
   "Passed an OS grid reference as an argument will return the eastings and northings."
   [& args]
   (if args
-    (println (grid2coord (first args)))))
+    (println (grid2coord (first args)))
+    (println "Usage: gridref GRIDREF")))
 
 ;   col0   col1   col2   col3   col4
 ;   0      1      2      3      4      -   row0
