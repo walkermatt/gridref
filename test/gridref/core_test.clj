@@ -109,6 +109,6 @@
     (is (= (grid2coord "HP6322316714") [463223.0 1216714.0])))
   (testing "St Marys Airport (Scilly Isles)"
     (is (= (grid2coord "SV9178010372") [91780.0 10372.0])))
-  (testing "Close to the origin of Britsh National Grid"
+  (testing "Close to the origin of British National Grid"
     (is (= (grid2coord "SV0239114892") [2391.0 14892.0]))))
 ; (test-grid2coord)
