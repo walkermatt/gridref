@@ -38,6 +38,11 @@ Will output:
 * Output in WTK or GeoJSON?
 * Handle NE, SW etc. suffixes
 
+## References
+
+* [http://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid](http://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid)
+* [http://www.ordnancesurvey.co.uk/docs/support/national-grid.pdf](http://www.ordnancesurvey.co.uk/docs/support/national-grid.pdf)
+
 ## License
 
 Copyright © 2013 Matt Walker (walkermatt@longwayaround.org.uk)
