@@ -102,5 +102,13 @@
   (testing "Tower of London"
     (is (= (grid2coord "TQ336805") [533600.0 180500.0])))
   (testing "SU"
-    (is (= (grid2coord "SU") [400000.0 100000.0]))))
+    (is (= (grid2coord "SU") [400000.0 100000.0])))
+  (testing "Glasgow"
+    (is (= (grid2coord "NS5899860113") [258998.0 660113.0])))
+  (testing "Saxa Vord (Northern Shetland)"
+    (is (= (grid2coord "HP6322316714") [463223.0 1216714.0])))
+  (testing "St Marys Airport (Scilly Isles)"
+    (is (= (grid2coord "SV9178010372") [91780.0 10372.0])))
+  (testing "Close to the origin of Britsh National Grid"
+    (is (= (grid2coord "SV0239114892") [2391.0 14892.0]))))
 ; (test-grid2coord)
