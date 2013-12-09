@@ -25,23 +25,24 @@
     (is (= (char2n \I) 7)))
   (testing "J = 8 (I is skipped so chars after I are one lower than expected"
     (is (= (char2n \J) 8))))
+; (test-char2n)
 
-(deftest test-char2offset
-  (testing "A = [0 0] (first col, first row)"
-    (is (= (char2offset \A) [0.0 0.0])))
-  (testing "B = [1 0]"
-    (is (= (char2offset \B) [1.0 0.0])))
-  (testing "C = [2 0]"
-    (is (= (char2offset \C) [2.0 0.0])))
-  (testing "D = [3 0]"
-    (is (= (char2offset \D) [3.0 0.0])))
-  (testing "E = [4 0] (last col, first row)"
-    (is (= (char2offset \E) [4.0 0.0])))
-  (testing "F = [0 1] (First col, second row)"
-    (is (= (char2offset \F) [0.0 1.0])))
-  (testing "Z = [4 4] (Last col, last row)"
-    (is (= (char2offset \Z) [4.0 4.0]))))
-(test-char2offset)
+(deftest test-n2offset
+  (testing "0 = [0 0] (first col, first row)"
+    (is (= (n2offset 0) [0.0 0.0])))
+  (testing "1 = [1 0]"
+    (is (= (n2offset 1) [1.0 0.0])))
+  (testing "2 = [2 0]"
+    (is (= (n2offset 2) [2.0 0.0])))
+  (testing "3 = [3 0]"
+    (is (= (n2offset 3) [3.0 0.0])))
+  (testing "4 = [4 0] (last col, first row)"
+    (is (= (n2offset 4) [4.0 0.0])))
+  (testing "5 = [0 1] (First col, second row)"
+    (is (= (n2offset 5) [0.0 1.0])))
+  (testing "24 = [4 4] (Last col, last row)"
+    (is (= (n2offset 24) [4.0 4.0]))))
+; (test-n2offset)
 
 (def major-origin [-1000000.0 2000000.0])
 (def major-cell-width 500000)
@@ -59,6 +60,7 @@
     (is (= (char2coord \K major-origin major-cell-width) [1000000.0 1500000.0])))
   (testing "Z = [1000000.0 0.0] (5th and last row, 5th and last col)"
     (is (= (char2coord \Z major-origin major-cell-width) [1000000.0 0.0]))))
+; (test-char2coord)
 
 (deftest test-alpha2coord
   (testing "AA (bottom right, coord of first row and column in major and minor)"
@@ -91,7 +93,9 @@
   (testing "Five digits"
     (is (== (padn "12345" 5) 12345)))
   (testing "Six digits"
-    (is (== (padn "123456" 5) 12345))))
+    (is (== (padn "123456" 5) 12345)))
+  (testing "Pass a number"
+    (is (== (padn 123456 5) 12345))))
 ; (test-padn)
 
 (deftest test-grid2coord

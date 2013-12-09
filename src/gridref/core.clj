@@ -7,30 +7,46 @@
 (defn to-int [s]
   (Integer/parseInt s))
 
-(defn char2n [c]
-  (let [a (int (first (string/upper-case c)))
-        b (if (>= a (int \I)) (dec a) a)]
-    (- b (int \A))))
+(defn char2n
+  "Returns numeric position of a given character relative to A. The character I
+  is skipped as it's not a valid grid reference character. A = 0, B = 1 etc."
+  [c]
+  (let [n (int (first (string/upper-case c)))]
+    (- (if (>= n (int \I)) (dec n) n) (int \A))))
 
-(defn char2offset [c]
-  (let [n (char2n c)
-        col (math/floor (/ n 5.0))
+(defn n2offset
+  "Returns the row and column that at given numbered cell falls at in a five
+  by five grid."
+  [n]
+  (let [col (math/floor (/ n 5.0))
         row (+ (- n (* (inc col) 5.0)) 5.0)]
     [row col]))
 
-(defn char2coord [c origin cellwidth]
-  (let [[e n] (map #(* % cellwidth) (char2offset c))]
+(defn char2coord
+  "Get the easting & northing coordinate pair associated with a given character
+  in a five by five grid relative to the specified origin and cellwidth (both in
+  meters)."
+  [c origin cellwidth]
+  (let [[e n] (map #(* % cellwidth) (n2offset (char2n c)))]
     [(+ (nth origin 0) e) (- (nth origin 1) n)]))
 
-(defn alpha2coord [r]
+(defn alpha2coord
+  "Get the easting & northing coordinate pair associated with a pair of britsh
+  national grid square characters."
+  [r]
   (let [[major minor] r
         coord (char2coord minor (char2coord major [-1000000.0 2000000.0] 500000) 100000)]
     (assoc coord 1 (- (get coord 1) 100000))))
 
-(defn padn [n length]
-  (to-int (apply str (take 5 (concat n (repeat 5 "0"))))))
+(defn padn
+  "Pad the given number so it is length long. Accepts a string or number,
+  expects whole integers"
+  [n length]
+  (to-int (apply str (take 5 (concat (str n) (repeat 5 "0"))))))
 
 (defn grid2coord
+  "Convert a british national grid reference to an easting & northing
+  coordinate pair as a vector: [easting northing]"
   [grid]
   (let [n (math/round (/ (- (count grid) 2.0) 2))]
     (let [re (re-pattern (str "([A-Z]{2})"
