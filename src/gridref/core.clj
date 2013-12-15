@@ -4,30 +4,42 @@
             [clojure.tools.trace :as trace])
   (:gen-class))
 
+; Global vars
+(def major-origin [-1000000.0 2000000.0])
+(def major-cell-width 500000.0)
+(def minor-cell-width 100000.0)
+
 (defn to-int [s]
   (Integer/parseInt s))
 
-(defn char2n
+(defn char2cell
   "Returns numeric position of a given character relative to A. The character I
   is skipped as it's not a valid grid reference character. A = 0, B = 1 etc."
   [c]
   (let [n (int (first (string/upper-case c)))]
     (- (if (>= n (int \I)) (dec n) n) (int \A))))
 
-(defn n2offset
-  "Returns the row and column that at given numbered cell falls at in a five
+(defn cell2offset
+  "Returns the row and column that a given numbered cell falls at in a five
   by five grid."
   [n]
   (let [col (math/floor (/ n 5.0))
         row (+ (- n (* (inc col) 5.0)) 5.0)]
     [row col]))
 
-(defn char2coord
-  "Get the easting & northing coordinate pair associated with a given character
+(defn char2offset
+  "Get the offset in a five by five grid of a given character, where each grid
+  cell is assigned a character A -> Z left to right, top to bottom skipping I"
+  [c]
+  (cell2offset (char2cell c)))
+
+; TODO should this be offset2coord and calculate the bottom left?
+(defn offset2topright
+  "Get the easting & northing coordinate pair associated with a given offset
   in a five by five grid relative to the specified origin and cellwidth (both in
   meters)."
-  [c origin cellwidth]
-  (let [[e n] (map #(* % cellwidth) (n2offset (char2n c)))]
+  [offset origin cellwidth]
+  (let [[e n] (map #(* % cellwidth) offset)]
     [(+ (nth origin 0) e) (- (nth origin 1) n)]))
 
 (defn alpha2coord
@@ -35,8 +47,8 @@
   national grid square characters."
   [r]
   (let [[major minor] r
-        coord (char2coord minor (char2coord major [-1000000.0 2000000.0] 500000) 100000)]
-    (assoc coord 1 (- (get coord 1) 100000))))
+        coord (offset2topright (char2offset minor) (offset2topright (char2offset major) major-origin major-cell-width) minor-cell-width)]
+    (assoc coord 1 (- (get coord 1) minor-cell-width))))
 
 (defn padn
   "Pad the given number so it is length long. Accepts a string or number,

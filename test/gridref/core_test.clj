@@ -13,54 +13,68 @@
     (is (= (to-int "100") 100)))
   (testing "-1 to int"
     (is (= (to-int "-1") -1))))
+;; (test-to-int)
 
-(deftest test-char2n
+
+(deftest test-char2cell
   (testing "A = 0"
-    (is (= (char2n \A) 0)))
+    (is (= (char2cell \A) 0)))
   (testing "B = 1"
-    (is (= (char2n \B) 1)))
+    (is (= (char2cell \B) 1)))
   (testing "H = 7"
-    (is (= (char2n \H) 7)))
+    (is (= (char2cell \H) 7)))
   (testing "I = 7 (I is skipped)"
-    (is (= (char2n \I) 7)))
+    (is (= (char2cell \I) 7)))
   (testing "J = 8 (I is skipped so chars after I are one lower than expected"
-    (is (= (char2n \J) 8))))
-; (test-char2n)
+    (is (= (char2cell \J) 8))))
+; (test-char2cell)
 
-(deftest test-n2offset
+(deftest test-cell2offset
   (testing "0 = [0 0] (first col, first row)"
-    (is (= (n2offset 0) [0.0 0.0])))
+    (is (= (cell2offset 0) [0.0 0.0])))
   (testing "1 = [1 0]"
-    (is (= (n2offset 1) [1.0 0.0])))
+    (is (= (cell2offset 1) [1.0 0.0])))
   (testing "2 = [2 0]"
-    (is (= (n2offset 2) [2.0 0.0])))
+    (is (= (cell2offset 2) [2.0 0.0])))
   (testing "3 = [3 0]"
-    (is (= (n2offset 3) [3.0 0.0])))
+    (is (= (cell2offset 3) [3.0 0.0])))
   (testing "4 = [4 0] (last col, first row)"
-    (is (= (n2offset 4) [4.0 0.0])))
+    (is (= (cell2offset 4) [4.0 0.0])))
   (testing "5 = [0 1] (First col, second row)"
-    (is (= (n2offset 5) [0.0 1.0])))
+    (is (= (cell2offset 5) [0.0 1.0])))
   (testing "24 = [4 4] (Last col, last row)"
-    (is (= (n2offset 24) [4.0 4.0]))))
-; (test-n2offset)
+    (is (= (cell2offset 24) [4.0 4.0]))))
+; (test-cell2offset)
 
-(def major-origin [-1000000.0 2000000.0])
-(def major-cell-width 500000)
-
-(deftest test-char2coord
+(deftest test-char2offset
   (testing "A = major-origin (top right)"
-    (is (= (char2coord \A major-origin major-cell-width) major-origin)))
+    (is (= (char2offset \A) [0.0 0.0])))
+  (testing "B = [1.0 0.0] (top row, second cell)"
+    (is (= (char2offset \B) [1.0 0.0])))
+  (testing "E = [4.0 0.0] (top row, 5th and last cell)"
+    (is (= (char2offset \E) [4.0 0.0])))
+  (testing "F = [0.0 1.0] (2nd row, first cell, the coords wrap around)"
+    (is (= (char2offset \F) [0.0 1.0])))
+  (testing "K = [4.0 1.0] (2nd row, last cell)"
+    (is (= (char2offset \K) [4.0 1.0])))
+  (testing "Z = [4.0 4.0] (5th and last row, 5th and last col)"
+    (is (= (char2offset \Z) [4.0 4.0]))))
+; (test-char2offset)
+
+(deftest test-offset2topright
+  (testing "A = major-origin (top right)"
+    (is (= (offset2topright [0.0 0.0] major-origin major-cell-width) major-origin)))
   (testing "B = [-500000.0 2000000.0] (top row, second cell)"
-    (is (= (char2coord \B major-origin major-cell-width) [-500000.0 2000000.0])))
+    (is (= (offset2topright [1.0 0.0] major-origin major-cell-width) [-500000.0 2000000.0])))
   (testing "E = [1000000.0 2000000.0] (top row, 5th and last cell)"
-    (is (= (char2coord \E major-origin major-cell-width) [1000000.0 2000000.0])))
+    (is (= (offset2topright [4.0 0.0] major-origin major-cell-width) [1000000.0 2000000.0])))
   (testing "F = [-1000000.0 1500000.0] (2nd row, first cell, the coords wrap around)"
-    (is (= (char2coord \F major-origin major-cell-width) [-1000000.0 1500000.0])))
+    (is (= (offset2topright [0.0 1.0] major-origin major-cell-width) [-1000000.0 1500000.0])))
   (testing "K = [1000000.0 1500000.0] (2nd row, last cell)"
-    (is (= (char2coord \K major-origin major-cell-width) [1000000.0 1500000.0])))
+    (is (= (offset2topright [4.0 1.0] major-origin major-cell-width) [1000000.0 1500000.0])))
   (testing "Z = [1000000.0 0.0] (5th and last row, 5th and last col)"
-    (is (= (char2coord \Z major-origin major-cell-width) [1000000.0 0.0]))))
-; (test-char2coord)
+    (is (= (offset2topright [4.0 4.0] major-origin major-cell-width) [1000000.0 0.0]))))
+; (test-offset2topright)
 
 (deftest test-alpha2coord
   (testing "AA (bottom right, coord of first row and column in major and minor)"
