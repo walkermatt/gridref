@@ -14,11 +14,19 @@
 (defn to-int [s]
   (Integer/parseInt s))
 
+(defn pad-head
+  "Pad the given number with leading zeros so it is 5 digits long. Accepts a
+  string or number, expects whole integers, returns a string"
+  [n]
+  (format (str "%05d") n))
+
 (defn pad-tail
   "Pad the given number with digits so it is 5 digits long. Accepts number,
   expects a whole int, returns an int"
   [n]
   (to-int (apply str (take 5 (concat (str n) (repeat 5 "0"))))))
+
+;; Grid reference to coord
 
 (defn char2cell
   "Returns numeric position of a given character relative to A. The character I
@@ -72,6 +80,42 @@
             alpha (first parts)
             numeric (if (== (count parts) 3) (drop 1 parts) ["0" "0"])]
         (into [] (map + (alpha2coord alpha) (map pad-tail numeric)))))))
+
+;; Coordinate to grid reference
+
+(defn cell2char
+  "Get the character associated with the numeric position relative to A."
+  [n]
+  (let [n (+ (int \A) n)]
+    (char (if (>= n (int \I)) (inc n) n))))
+
+(defn coord2offset
+  "Get the offset in a five by five grid relative to the specified origin and cellwidth (both in meters) for the given easting & northing coordinate pair. Called once to get the first grid letter and again to get the second."
+  [coord origin cellwidth]
+  (let [[e w] (map #(- % (mod % cellwidth)) coord)]
+    [(math/floor (/ (- e (first origin)) cellwidth))
+     (math/floor (/ (- (second origin) w minor-cell-width) cellwidth))]))
+; (coord2offset (alpha2coord "ZZ") major-origin major-cell-width)
+
+(defn offset2cell
+  "Get the number of the cell in a five by five grid counting from left to
+  right, top to bottom"
+  [o]
+  (+ (first o) (* (second o) 5)))
+
+(defn coord2alpha
+  "Get the first two grid reference letters for a given easting & northing
+  coordinate pair."
+  [coord]
+  (let [major (cell2char (offset2cell (coord2offset coord major-origin major-cell-width)))
+        minor-origin (offset2topright (char2offset major) major-origin major-cell-width)
+        minor (cell2char (offset2cell (coord2offset coord minor-origin minor-cell-width)))]
+    (str major minor)))
+
+(defn coord2ref
+  "Get a five figure grid reference for a given coordinate."
+  [coord]
+  (str (coord2alpha coord) (pad-head (int (mod (first coord) minor-cell-width))) (pad-head (int (mod (second coord) minor-cell-width)))))
 
 (defn -main
   "Passed an OS grid reference as an argument will return the eastings and northings."
