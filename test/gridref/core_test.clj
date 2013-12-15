@@ -2,6 +2,8 @@
   (:require [clojure.test :refer :all]
             [gridref.core :refer :all]))
 
+;; Utility
+
 (deftest test-to-int
   (testing "0 to int"
     (is (= (to-int "0") 0)))
@@ -14,6 +16,25 @@
   (testing "-1 to int"
     (is (= (to-int "-1") -1))))
 ;; (test-to-int)
+
+(deftest test-pad-tail
+  (testing "Empty string"
+    (is (== (pad-tail "") 0)))
+  (testing "Single digit"
+    (is (== (pad-tail "1") 10000)))
+  (testing "Two digits"
+    (is (== (pad-tail "12") 12000)))
+  (testing "Three digits"
+    (is (== (pad-tail "123") 12300)))
+  (testing "Four digits"
+    (is (== (pad-tail "1234") 12340)))
+  (testing "Five digits"
+    (is (== (pad-tail "12345") 12345)))
+  (testing "Six digits"
+    (is (== (pad-tail "123456") 12345)))
+  (testing "Pass a number"
+    (is (== (pad-tail 123456) 12345))))
+; (test-pad-tail)
 
 
 (deftest test-char2cell
@@ -92,25 +113,6 @@
   (testing "Lowercase letters"
     (is (= (alpha2coord "aa") [-1000000.0 1900000.0]))))
 ; (test-alpha2coord)
-
-(deftest test-padn
-  (testing "Empty string"
-    (is (== (padn "" 5) 0)))
-  (testing "Single digit"
-    (is (== (padn "1" 5) 10000)))
-  (testing "Two digits"
-    (is (== (padn "12" 5) 12000)))
-  (testing "Three digits"
-    (is (== (padn "123" 5) 12300)))
-  (testing "Four digits"
-    (is (== (padn "1234" 5) 12340)))
-  (testing "Five digits"
-    (is (== (padn "12345" 5) 12345)))
-  (testing "Six digits"
-    (is (== (padn "123456" 5) 12345)))
-  (testing "Pass a number"
-    (is (== (padn 123456 5) 12345))))
-; (test-padn)
 
 (deftest test-grid2coord
   (testing "Ben Nevis"

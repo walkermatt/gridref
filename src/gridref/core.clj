@@ -9,8 +9,16 @@
 (def major-cell-width 500000.0)
 (def minor-cell-width 100000.0)
 
+;; Utility
+
 (defn to-int [s]
   (Integer/parseInt s))
+
+(defn pad-tail
+  "Pad the given number with digits so it is 5 digits long. Accepts number,
+  expects a whole int, returns an int"
+  [n]
+  (to-int (apply str (take 5 (concat (str n) (repeat 5 "0"))))))
 
 (defn char2cell
   "Returns numeric position of a given character relative to A. The character I
@@ -50,12 +58,6 @@
         coord (offset2topright (char2offset minor) (offset2topright (char2offset major) major-origin major-cell-width) minor-cell-width)]
     (assoc coord 1 (- (get coord 1) minor-cell-width))))
 
-(defn padn
-  "Pad the given number so it is length long. Accepts a string or number,
-  expects whole integers"
-  [n length]
-  (to-int (apply str (take 5 (concat (str n) (repeat 5 "0"))))))
-
 (defn grid2coord
   "Convert a british national grid reference to an easting & northing
   coordinate pair as a vector: [easting northing]"
@@ -69,7 +71,7 @@
       (let [parts (nthnext (re-matches re grid) 1)
             alpha (first parts)
             numeric (if (== (count parts) 3) (drop 1 parts) ["0" "0"])]
-        (into [] (map + (alpha2coord alpha) (map #(padn % 5) numeric)))))))
+        (into [] (map + (alpha2coord alpha) (map pad-tail numeric)))))))
 
 (defn -main
   "Passed an OS grid reference as an argument will return the eastings and northings."
