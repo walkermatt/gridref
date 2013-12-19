@@ -1,6 +1,6 @@
 # GridRef
 
-Convert an alpha numeric Ordnance Survey grid reference to easting and northing.
+Convert an alpha numeric Ordnance Survey grid reference to easting and northing or vice versa.
 
 Valid input includes:
 
@@ -8,6 +8,8 @@ Valid input includes:
     NN1665071250 => The easting and northing of Ben Nevis
     SU387148     => The Ordnance Survey offices in Southampton
     TQ336805     => The Tower of London
+
+    "533600.0 180500.0" => TQ3360080500 (The Tower of London)
 
 ## Build
 
@@ -35,6 +37,10 @@ Will output:
 
 ## Todo
 
+* Handle spaces in grid ref
+* Allow lowercase grid letters
+* Handle decimal easting & northing
+* Allow setting the number of digits when outputting a grid reference
 * Output in WTK or GeoJSON?
 * Handle NE, SW etc. suffixes
 
