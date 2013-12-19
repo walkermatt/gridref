@@ -120,12 +120,14 @@
 (defn -main
   "Passed an OS grid reference as an argument will return the eastings and northings."
   [& args]
-  (if args
-    (println (grid2coord (first args)))
-    (println "Usage: gridref GRIDREF")))
+  (let [arg (if (nil? args) "" (first args))]
+    (if-let [match (re-find #"(^[A-Z]{2}(?: ?\d+ ?\d+)?)" arg)]
+      (println (grid2coord (nth match 1)))
+      (if-let [match (re-find #"^\[?(\d+) (\d+)\]?" arg)]
+        (println (coord2ref (map to-int (drop 1 match))))
+        (println "Usage: gridref GRIDREF | [EASTING NORTHING]")))))
 
 ;   col0   col1   col2   col3   col4
 ;   0      1      2      3      4      -   row0
 ;   5      6      7      8      9      -   row1
 ;   10     11     12     13     14     -   row2
-
