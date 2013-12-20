@@ -15,7 +15,7 @@
     (is (= (to-int "100") 100)))
   (testing "-1 to int"
     (is (= (to-int "-1") -1))))
-;; (test-to-int)
+; (test-to-int)
 
 (deftest test-pad-tail
   (testing "Empty string"
@@ -234,4 +234,4 @@
   (testing "Coords with square brackets are acceptable" (is (not (= (convert ["[123456 654321]"]) nil) )))
   (testing "Coords without square brackets are acceptable" (is (not (= (convert ["123456 654321"]) nil) )))
   (testing "Coords with decimals are acceptable" (is (not (= (convert ["123456.00 654321.00"]) nil) ))))
-(test-convert)
+; (test-convert)
