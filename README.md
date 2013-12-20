@@ -44,6 +44,11 @@ Will output:
 * Output in WTK or GeoJSON?
 * Handle NE, SW etc. suffixes
 
+## Possible cli interface
+
+    gridref --digits 4 "123456 123456"
+    gridref "SO1234"
+
 ## References
 
 * [http://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid](http://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid)
