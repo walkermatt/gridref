@@ -71,7 +71,7 @@
   coordinate pair as a vector: [easting northing]"
   [grid]
   (let [n (math/round (/ (- (count grid) 2.0) 2))]
-    (let [re (re-pattern (str "([A-Z]{2})"
+    (let [re (re-pattern (str "([a-zA-Z]{2})"
                               (if (> n 0)
                                 (str "(\\d{" n "})(\\d{" n "})"))))]
       ; Split the gridref into it's parts, head is the grid letters,
@@ -117,15 +117,19 @@
   [coord]
   (str (coord2alpha coord) (pad-head (int (mod (first coord) minor-cell-width))) (pad-head (int (mod (second coord) minor-cell-width)))))
 
+(defn convert
+  [args]
+  (let [arg (if (nil? args) "" (first args))]
+  (if-let [match (re-find #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)?)" arg)]
+    (grid2coord (string/replace (nth match 1) " " ""))
+    (if-let [match (re-find #"^\[?(\d+)(?:\.\d+)? (\d+)(?:\.\d+)?\]?" arg)]
+      (coord2ref (map to-int (drop 1 match)))
+      "Usage: gridref GRIDREF | COORDINATE"))))
+
 (defn -main
   "Passed an OS grid reference as an argument will return the eastings and northings."
   [& args]
-  (let [arg (if (nil? args) "" (first args))]
-    (if-let [match (re-find #"(^[A-Z]{2}(?: ?\d+ ?\d+)?)" arg)]
-      (println (grid2coord (nth match 1)))
-      (if-let [match (re-find #"^\[?(\d+) (\d+)\]?" arg)]
-        (println (coord2ref (map to-int (drop 1 match))))
-        (println "Usage: gridref GRIDREF | [EASTING NORTHING]")))))
+  (println (convert args)))
 
 ;   col0   col1   col2   col3   col4
 ;   0      1      2      3      4      -   row0

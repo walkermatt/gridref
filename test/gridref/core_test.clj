@@ -225,3 +225,13 @@
   (testing "SV9178010372" (is (= (coord2ref [91780.0 10372.0]) "SV9178010372")))
   (testing "HP6322316714" (is (= (coord2ref [463223.0 1216714.0]) "HP6322316714"))))
 ; (test-coord2ref)
+
+(deftest test-convert
+  (testing "Just letters are acceptable" (is (not (= (convert ["SO"]) nil) )))
+  (testing "Letters and numbers are acceptable" (is (not (= (convert ["SO12"]) nil) )))
+  (testing "Lowercase letters are acceptable" (is (not (= (convert ["so"]) nil) )))
+  (testing "Spaces in grid refs are acceptable" (is (not (= (convert ["SO 12 34"]) nil) )))
+  (testing "Coords with square brackets are acceptable" (is (not (= (convert ["[123456 654321]"]) nil) )))
+  (testing "Coords without square brackets are acceptable" (is (not (= (convert ["123456 654321"]) nil) )))
+  (testing "Coords with decimals are acceptable" (is (not (= (convert ["123456.00 654321.00"]) nil) ))))
+(test-convert)
