@@ -112,10 +112,15 @@
         minor (cell2char (offset2cell (coord2offset coord minor-origin minor-cell-width)))]
     (str major minor)))
 
+(defn coord2digits
+  [coord figures]
+  (let [n (/ figures 2)]
+    (apply str (map #(apply str (take n (pad-head (int (mod % minor-cell-width))))) coord))))
+
 (defn coord2ref
   "Get a five figure grid reference for a given coordinate."
   [coord]
-  (str (coord2alpha coord) (pad-head (int (mod (first coord) minor-cell-width))) (pad-head (int (mod (second coord) minor-cell-width)))))
+    (str (coord2alpha coord) (coord2digits coord 10)))
 
 (defn convert
   [args]
