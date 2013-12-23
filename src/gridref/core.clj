@@ -1,7 +1,9 @@
 (ns gridref.core
   (:require [clojure.string :as string]
             [clojure.math.numeric-tower :as math]
-            [clojure.tools.trace :as trace])
+            [clojure.tools.trace :as trace]
+            [clojure.tools.cli :refer [parse-opts]]
+            [clojure.java.io :as io])
   (:gen-class))
 
 ; Global vars
@@ -119,22 +121,47 @@
 
 (defn coord2ref
   "Get a five figure grid reference for a given coordinate."
-  [coord]
-    (str (coord2alpha coord) (coord2digits coord 10)))
+  [coord figures]
+    (str (coord2alpha coord) (coord2digits coord figures)))
+
+;; CLI
 
 (defn convert
-  [args]
+  [options args]
   (let [arg (if (nil? args) "" (first args))]
   (if-let [match (re-find #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)?)" arg)]
     (grid2coord (string/replace (nth match 1) " " ""))
     (if-let [match (re-find #"^\[?(\d+)(?:\.\d+)? (\d+)(?:\.\d+)?\]?" arg)]
-      (coord2ref (map to-int (drop 1 match)))
-      "Usage: gridref GRIDREF | COORDINATE"))))
+      (coord2ref (map to-int (drop 1 match)) (:figures options))))))
+
+(def cli-options
+   [["-f" "--figures <n>" "Number of figures to include in grid reference, an even number from 0 to 10"
+     :default 10
+     :parse-fn #(to-int %)
+     :validate [#(and (>= % 0) (<= % 10) (= (mod % 2) 0))]]
+    ["-h" "--help"]])
+
+(defn usage-msg
+ [options-summary]
+ (format (slurp (io/resource "cli-usage")) options-summary))
+
+(defn error-msg
+  [e]
+  (str "The following errors where found:" \newline (string/join \newline e)))
+
+(defn process-cli
+  [args]
+    (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
+      (cond
+        (:help options) (usage-msg summary)
+        (not= (count arguments) 1) (usage-msg summary)
+        errors (error-msg errors)
+        :else (or (convert options arguments) (usage-msg summary)))))
 
 (defn -main
   "Passed an OS grid reference as an argument will return the eastings and northings."
   [& args]
-  (println (convert args)))
+  (println (process-cli args)))
 
 ;   col0   col1   col2   col3   col4
 ;   0      1      2      3      4      -   row0

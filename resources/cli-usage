@@ -1,0 +1,21 @@
+Convert an alpha numeric Ordnance Survey grid reference to easting and northing or vice versa.
+
+Usage:
+
+  gridref <gridref>
+  gridref [--figures=<n>] <coordinate>
+
+Options:
+
+%s
+
+Examples:
+
+Convert the grid reference for the Tower of London to British National Grid coordinate pair:
+
+    gridref TQ336805
+
+Convert the BNG coordinate pair for the Tower of London to a 6 figure gird reference:
+
+    gridref --figures=6 "533600 180500"
+
