@@ -132,10 +132,11 @@
 (defn convert
   [options args]
   (let [arg (if (nil? args) "" (first args))]
-  (if-let [match (re-find #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)?)" arg)]
-    (grid2coord (string/replace (nth match 1) " " ""))
-    (if-let [match (re-find #"^\[?(\d+)(?:\.\d+)? (\d+)(?:\.\d+)?\]?" arg)]
-      (coord2ref (map to-int (drop 1 match)) (:figures options))))))
+    (let [arg (if (= arg "-") (read-line) arg)]
+      (if-let [match (re-find #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)?)" arg)]
+        (grid2coord (string/replace (nth match 1) " " ""))
+        (if-let [match (re-find #"^\[?(\d+)(?:\.\d+)? (\d+)(?:\.\d+)?\]?" arg)]
+          (coord2ref (map to-int (drop 1 match)) (:figures options)))))))
 
 (def cli-options
    [["-f" "--figures <n>" "Number of figures to include in grid reference, an even number from 0 to 10"

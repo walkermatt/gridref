@@ -5,6 +5,8 @@ Usage:
   gridref <gridref>
   gridref [--figures=<n>] <coordinate>
 
+When - is passed instead of a <gridref> or <coordinate> read from standard input.
+
 Options:
 
 %s
