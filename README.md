@@ -37,10 +37,9 @@ Will output:
 
 ## Todo
 
-* Handle spaces in grid ref
-* Allow lowercase grid letters
-* Handle decimal easting & northing
-* Allow setting the number of digits when outputting a grid reference
+* Update readme with usage and examples (or link to it)
+* Exit with 1 on error
+* Shell script to alias as gridref
 * Output in WTK or GeoJSON?
 * Handle NE, SW etc. suffixes
 
