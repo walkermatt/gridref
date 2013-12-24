@@ -92,7 +92,9 @@
     (char (if (>= n (int \I)) (inc n) n))))
 
 (defn coord2offset
-  "Get the offset in a five by five grid relative to the specified origin and cellwidth (both in meters) for the given easting & northing coordinate pair. Called once to get the first grid letter and again to get the second."
+  "Get the offset in a five by five grid relative to the specified origin and
+  cellwidth (both in meters) for the given easting & northing coordinate pair.
+  Called once to get the first grid letter and again to get the second."
   [coord origin cellwidth]
   (let [[e w] (map #(- % (mod % cellwidth)) coord)]
     [(math/floor (/ (- e (first origin)) cellwidth))
@@ -115,6 +117,7 @@
     (str major minor)))
 
 (defn coord2digits
+  "Get the trailing digits for an alpha numberic grid reference from a coordinate pair"
   [coord figures]
   (let [n (/ figures 2)]
     (apply str (map #(apply str (take n (pad-head (int (mod % minor-cell-width))))) coord))))
