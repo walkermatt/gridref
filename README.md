@@ -1,52 +1,53 @@
 # GridRef
 
-Convert an alpha numeric Ordnance Survey grid reference to easting and northing or vice versa.
+Clojure CLI and functions to convert an alpha numeric Ordnance Survey grid reference to easting and northing or a grid reference to easting and northing.
 
 Valid input includes:
 
-    ST           => The bottom right coordinate of the ST grid square
-    NN1665071250 => The easting and northing of Ben Nevis
-    SU387148     => The Ordnance Survey offices in Southampton
-    TQ336805     => The Tower of London
+    ST                    => [300000.0 100000.0] (The bottom right coordinate of the ST grid square)
+    NN1665071250          => [216650.0 771250.0] (The Ben Nevis)
+    SU387148              => [438700.0 114800.0] (The Ordnance Survey offices in Southampton)
+    TQ336805              => [533600.0 180500.0] (The Tower of London)
 
-    "533600.0 180500.0" => TQ3360080500 (The Tower of London)
+    "[300000.0 100000.0]" => ST (The bottom right coordinate of the ST grid square)
+    "216650.0 771250.0"   => NN1665071250 (The Ben Nevis)
+    "[438700 114800]"     => SU387148 (The Ordnance Survey offices in Southampton)
+    "533600 180500"       => TQ3360080500 (The Tower of London)
+
+The `gridref.core` namespace defines the functions `gridref2coord` and `coord2gridref` that support converting between a grid reference and coordinate pair.
 
 ## Build
 
+Using [Leiningen](https://github.com/technomancy/leiningen):
+
     $ lein uberjar
 
-## Usage
+## CLI Usage
 
-Using the lein:
+Using the lein run command:
 
-    $ lein run [args]
+    $ lein run <gridref>
+
+or
+
+    $ lein run [--figures=<n>] <coordinate>
 
 Using the standalone jar:
 
-    $ java -jar gridref-0.1.0-standalone.jar [args]
+    $ java -jar gridref-0.1.0-standalone.jar <gridref>
 
-## Examples
+or
 
-Determine the coordinates in British National Grid of the Ordnance Survey Offices in Southampton, UK
+    $ java -jar gridref-0.1.0-standalone.jar [--figures=<n>] <coordinate>
 
-    $ java -jar gridref-0.1.0-standalone.jar SU387148
-
-Will output:
-
-    [438700.0 114800.0]
+For full usage and examples see the file ./resources/cli-usage.
 
 ## Todo
 
-* Update readme with usage and examples (or link to it)
 * Exit with 1 on error
-* Shell script to alias as gridref
-* Output in WTK or GeoJSON?
-* Handle NE, SW etc. suffixes
-
-## Possible cli interface
-
-    gridref --digits 4 "123456 123456"
-    gridref "SO1234"
+* Shell script to alias as gridref?
+* Input and output in WTK or GeoJSON?
+* Handle NE, SW etc. suffixes?
 
 ## References
 
@@ -55,7 +56,7 @@ Will output:
 
 ## License
 
-Copyright © 2013 Matt Walker (walkermatt@longwayaround.org.uk)
+Copyright © 2013 Matt Walker (walkermatt@longwayaround.org.uk, @_walkermatt on Twitter)
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
