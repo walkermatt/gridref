@@ -128,24 +128,24 @@
     (is (= (alpha2coord "aa") [-1000000.0 1900000.0]))))
 ; (test-alpha2coord)
 
-(deftest test-grid2coord
+(deftest test-gridref2coord
   (testing "Ben Nevis"
-    (is (= (grid2coord "NN1665071250") [216650.0 771250.0])))
+    (is (= (gridref2coord "NN1665071250") [216650.0 771250.0])))
   (testing "OS Southampton"
-    (is (= (grid2coord "SU387148") [438700.0 114800.0])))
+    (is (= (gridref2coord "SU387148") [438700.0 114800.0])))
   (testing "Tower of London"
-    (is (= (grid2coord "TQ336805") [533600.0 180500.0])))
+    (is (= (gridref2coord "TQ336805") [533600.0 180500.0])))
   (testing "SU"
-    (is (= (grid2coord "SU") [400000.0 100000.0])))
+    (is (= (gridref2coord "SU") [400000.0 100000.0])))
   (testing "Glasgow"
-    (is (= (grid2coord "NS5899860113") [258998.0 660113.0])))
+    (is (= (gridref2coord "NS5899860113") [258998.0 660113.0])))
   (testing "Saxa Vord (Northern Shetland)"
-    (is (= (grid2coord "HP6322316714") [463223.0 1216714.0])))
+    (is (= (gridref2coord "HP6322316714") [463223.0 1216714.0])))
   (testing "St Marys Airport (Scilly Isles)"
-    (is (= (grid2coord "SV9178010372") [91780.0 10372.0])))
+    (is (= (gridref2coord "SV9178010372") [91780.0 10372.0])))
   (testing "Close to the origin of British National Grid"
-    (is (= (grid2coord "SV0239114892") [2391.0 14892.0]))))
-; (test-grid2coord)
+    (is (= (gridref2coord "SV0239114892") [2391.0 14892.0]))))
+; (test-gridref2coord)
 
 ;; Coordinate to grid reference
 
@@ -226,18 +226,18 @@
   (testing "10 figures" (is (= (coord2digits [463223.0 1216714.0] 10) "6322316714"))))
 ; (test-coord2digits)
 
-(deftest test-coord2ref
-  (testing "SO8584975045" (is (= (coord2ref [385849 275045] 10) "SO8584975045")))
-  (testing "SP0614186848, leading 0" (is (= (coord2ref [406141 286848] 10) "SP0614186848")))
-  (testing "NT2499574112" (is (= (coord2ref [324995 674112] 10) "NT2499574112")))
-  (testing "TQ3007480274" (is (= (coord2ref [530074 180274] 10) "TQ3007480274")))
-  (testing "SV9178010372" (is (= (coord2ref [91780.0 10372.0] 10) "SV9178010372")))
-  (testing "HP6322316714" (is (= (coord2ref [463223.0 1216714.0] 10) "HP6322316714")))
-  (testing "HP632167" (is (= (coord2ref [463223.0 1216714.0] 6) "HP632167")))
-  (testing "HP6316" (is (= (coord2ref [463223.0 1216714.0] 4) "HP6316")))
-  (testing "HP61" (is (= (coord2ref [463223.0 1216714.0] 2) "HP61")))
-  (testing "HP" (is (= (coord2ref [463223.0 1216714.0] 0) "HP"))))
-; (test-coord2ref)
+(deftest test-coord2gridref
+  (testing "SO8584975045" (is (= (coord2gridref [385849 275045] 10) "SO8584975045")))
+  (testing "SP0614186848, leading 0" (is (= (coord2gridref [406141 286848] 10) "SP0614186848")))
+  (testing "NT2499574112" (is (= (coord2gridref [324995 674112] 10) "NT2499574112")))
+  (testing "TQ3007480274" (is (= (coord2gridref [530074 180274] 10) "TQ3007480274")))
+  (testing "SV9178010372" (is (= (coord2gridref [91780.0 10372.0] 10) "SV9178010372")))
+  (testing "HP6322316714" (is (= (coord2gridref [463223.0 1216714.0] 10) "HP6322316714")))
+  (testing "HP632167" (is (= (coord2gridref [463223.0 1216714.0] 6) "HP632167")))
+  (testing "HP6316" (is (= (coord2gridref [463223.0 1216714.0] 4) "HP6316")))
+  (testing "HP61" (is (= (coord2gridref [463223.0 1216714.0] 2) "HP61")))
+  (testing "HP" (is (= (coord2gridref [463223.0 1216714.0] 0) "HP"))))
+; (test-coord2gridref)
 
 (deftest test-convert
   (testing "Just letters are acceptable" (is (not (= (convert {} ["SO"]) nil) )))

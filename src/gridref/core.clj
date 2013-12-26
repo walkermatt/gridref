@@ -68,7 +68,7 @@
         coord (offset2topright (char2offset minor) (offset2topright (char2offset major) major-origin major-cell-width) minor-cell-width)]
     (assoc coord 1 (- (get coord 1) minor-cell-width))))
 
-(defn grid2coord
+(defn gridref2coord
   "Convert a british national grid reference to an easting & northing
   coordinate pair as a vector: [easting northing]"
   [grid]
@@ -122,7 +122,7 @@
   (let [n (/ figures 2)]
     (apply str (map #(apply str (take n (pad-head (int (mod % minor-cell-width))))) coord))))
 
-(defn coord2ref
+(defn coord2gridref
   "Get a five figure grid reference for a given coordinate."
   [coord figures]
     (str (coord2alpha coord) (coord2digits coord figures)))
@@ -134,9 +134,9 @@
   (let [arg (if (nil? args) "" (first args))]
     (let [arg (if (= arg "-") (read-line) arg)]
       (if-let [match (re-find #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)?)" arg)]
-        (grid2coord (string/replace (nth match 1) " " ""))
+        (gridref2coord (string/replace (nth match 1) " " ""))
         (if-let [match (re-find #"^\[?(\d+)(?:\.\d+)? (\d+)(?:\.\d+)?\]?" arg)]
-          (coord2ref (map to-int (drop 1 match)) (:figures options)))))))
+          (coord2gridref (map to-int (drop 1 match)) (:figures options)))))))
 
 (def cli-options
    [["-f" "--figures <n>" "Number of figures to include in grid reference, an even number from 0 to 10"
