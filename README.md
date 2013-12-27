@@ -1,6 +1,6 @@
 # GridRef
 
-Clojure CLI and functions to convert an alpha numeric Ordnance Survey grid reference to easting and northing or a grid reference to easting and northing.
+Clojure CLI and functions to convert an alpha numeric Ordnance Survey grid reference to easting / northing or easting / northing to a grid reference.
 
 Valid input includes:
 
