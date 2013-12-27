@@ -78,10 +78,10 @@
                                 (str "(\\d{" n "})(\\d{" n "})"))))]
       ; Split the gridref into it's parts, head is the grid letters,
       ; the tail is the numeric part which are set to 0 0 if not present
-      (let [parts (nthnext (re-matches re grid) 1)
-            alpha (first parts)
-            numeric (if (== (count parts) 3) (drop 1 parts) ["0" "0"])]
-        (into [] (map + (alpha2coord alpha) (map pad-tail numeric)))))))
+      (if-let [parts (nthnext (re-matches re grid) 1)]
+        (let [alpha (first parts)
+              numeric (if (== (count parts) 3) (drop 1 parts) ["0" "0"])]
+          (into [] (map + (alpha2coord alpha) (map pad-tail numeric))))))))
 
 ;; Coordinate to grid reference
 
@@ -99,7 +99,6 @@
   (let [[e w] (map #(- % (mod % cellwidth)) coord)]
     [(math/floor (/ (- e (first origin)) cellwidth))
      (math/floor (/ (- (second origin) w minor-cell-width) cellwidth))]))
-; (coord2offset (alpha2coord "ZZ") major-origin major-cell-width)
 
 (defn offset2cell
   "Get the number of the cell in a five by five grid counting from left to
