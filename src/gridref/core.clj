@@ -133,7 +133,7 @@
   (let [arg (if (nil? args) "" (first args))]
     (let [arg (if (= arg "-") (read-line) arg)]
       (if-let [match (re-find #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)?)" arg)]
-        (gridref2coord (string/replace (nth match 1) " " ""))
+        (gridref2coord (nth match 1))
         (if-let [match (re-find #"^\[?(\d+)(?:\.\d+)? (\d+)(?:\.\d+)?\]?" arg)]
           (coord2gridref (map to-int (drop 1 match)) (:figures options)))))))
 

@@ -144,7 +144,11 @@
   (testing "St Marys Airport (Scilly Isles)"
     (is (= (gridref2coord "SV9178010372") [91780.0 10372.0])))
   (testing "Close to the origin of British National Grid"
-    (is (= (gridref2coord "SV0239114892") [2391.0 14892.0]))))
+    (is (= (gridref2coord "sv0239114892") [2391.0 14892.0])))
+  (testing "Lowercase letters are fine"
+    (is (= (gridref2coord "SV0239114892") [2391.0 14892.0])))
+  (testing "Spaces between parts are fine"
+    (is (= (gridref2coord "SV 02391 14892") [2391.0 14892.0]))))
 ; (test-gridref2coord)
 
 ;; Coordinate to grid reference
