@@ -243,12 +243,12 @@
   (testing "HP" (is (= (coord2gridref [463223.0 1216714.0] 0) "HP"))))
 ; (test-coord2gridref)
 
-(deftest test-convert
-  (testing "Just letters are acceptable" (is (not (= (convert {} ["SO"]) nil) )))
-  (testing "Letters and numbers are acceptable" (is (not (= (convert {} ["SO12"]) nil) )))
-  (testing "Lowercase letters are acceptable" (is (not (= (convert {} ["so"]) nil) )))
-  (testing "Spaces in grid refs are acceptable" (is (not (= (convert {} ["SO 12 34"]) nil) )))
-  (testing "Coords with square brackets are acceptable" (is (not (= (convert {:figures 6} ["[123456 654321]"]) nil) )))
-  (testing "Coords without square brackets are acceptable" (is (not (= (convert {:figures 6} ["123456 654321"]) nil) )))
-  (testing "Coords with decimals are acceptable" (is (not (= (convert {:figures 6} ["123456.00 654321.00"]) nil) ))))
-; (test-convert)
+(deftest test-dispatch-cli
+  (testing "Just letters are acceptable" (is (not (= (dispatch-cli {} ["SO"]) nil) )))
+  (testing "Letters and numbers are acceptable" (is (not (= (dispatch-cli {} ["SO12"]) nil) )))
+  (testing "Lowercase letters are acceptable" (is (not (= (dispatch-cli {} ["so"]) nil) )))
+  (testing "Spaces in grid refs are acceptable" (is (not (= (dispatch-cli {} ["SO 12 34"]) nil) )))
+  (testing "Coords with square brackets are acceptable" (is (not (= (dispatch-cli {:figures 6} ["[123456 654321]"]) nil) )))
+  (testing "Coords without square brackets are acceptable" (is (not (= (dispatch-cli {:figures 6} ["123456 654321"]) nil) )))
+  (testing "Coords with decimals are acceptable" (is (not (= (dispatch-cli {:figures 6} ["123456.00 654321.00"]) nil) ))))
+; (test-dispatch-cli)

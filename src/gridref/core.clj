@@ -72,7 +72,8 @@
   "Convert a british national grid reference to an easting & northing
   coordinate pair as a vector: [easting northing]"
   [grid]
-  (let [n (math/round (/ (- (count grid) 2.0) 2))]
+  (let [grid (string/replace grid " " "")
+        n (quot (- (count grid) 2) 2)]
     (let [re (re-pattern (str "([a-zA-Z]{2})"
                               (if (> n 0)
                                 (str "(\\d{" n "})(\\d{" n "})"))))]
@@ -128,14 +129,27 @@
 
 ;; CLI
 
-(defn convert
+(def coord-re #"^\[?(\d+)(?:\.\d+)? (\d+)(?:\.\d+)?\]?")
+(def gridref-re #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)?)")
+
+(defn parse-gridref
+  [gridref]
+  (if-let [match (re-find gridref-re gridref)]
+    (second match)))
+
+(defn parse-coord
+  [coord]
+  (if-let [match (re-find coord-re coord)]
+    (map to-int (drop 1 match))))
+
+(defn dispatch-cli
   [options args]
   (let [arg (if (nil? args) "" (first args))]
     (let [arg (if (= arg "-") (read-line) arg)]
-      (if-let [match (re-find #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)?)" arg)]
-        (gridref2coord (nth match 1))
-        (if-let [match (re-find #"^\[?(\d+)(?:\.\d+)? (\d+)(?:\.\d+)?\]?" arg)]
-          (coord2gridref (map to-int (drop 1 match)) (:figures options)))))))
+      (if-let [gridref (parse-gridref arg)]
+        (gridref2coord gridref)
+        (if-let [coord (parse-coord arg)]
+          (coord2gridref coord (:figures options)))))))
 
 (def cli-options
    [["-f" "--figures <n>" "Number of figures to include in grid reference, an even number from 0 to 10"
@@ -159,7 +173,7 @@
         (:help options) (usage-msg summary)
         (not= (count arguments) 1) (usage-msg summary)
         errors (error-msg errors)
-        :else (or (convert options arguments) (usage-msg summary)))))
+        :else (or (dispatch-cli options arguments) (usage-msg summary)))))
 
 (defn -main
   "Passed an OS grid reference as an argument will return the eastings and northings."
