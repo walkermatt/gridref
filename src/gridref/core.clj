@@ -58,7 +58,7 @@
   meters)."
   [offset origin cellwidth]
   (let [[e n] (map #(* % cellwidth) offset)]
-    [(+ (nth origin 0) e) (- (nth origin 1) n)]))
+    [(+ (first origin) e) (- (second origin) n)]))
 
 (defn alpha2coord
   "Get the easting & northing coordinate pair associated with a pair of britsh
