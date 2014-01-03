@@ -129,15 +129,17 @@
 
 ;; CLI
 
-(def coord-re #"^\[?(\d+)(?:\.\d+)? (\d+)(?:\.\d+)?\]?")
 (def gridref-re #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)?)")
-
 (defn parse-gridref
+  "Return a valid grid reference or nil"
   [gridref]
   (if-let [match (re-find gridref-re gridref)]
     (second match)))
 
+(def coord-re #"^\[?(\d+)(?:\.\d+)?[ ,]+(\d+)(?:\.\d+)?\]?")
 (defn parse-coord
+  "Parse a string representing a coordinate pair and return a valid coord
+  vector [easting northing] or nil"
   [coord]
   (if-let [match (re-find coord-re coord)]
     (map to-int (drop 1 match))))

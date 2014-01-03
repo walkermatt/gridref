@@ -243,6 +243,25 @@
   (testing "HP" (is (= (coord2gridref [463223.0 1216714.0] 0) "HP"))))
 ; (test-coord2gridref)
 
+(deftest test-parse-gridref
+  (testing "Valid 6 figure grid ref" (is (= (parse-gridref "ST12") "ST12")))
+  (testing "Valid 6 figure grid ref with spaces" (is (= (parse-gridref "ST 1 2") "ST 1 2")))
+  (testing "First two letters" (is (= (parse-gridref "The internet is made of cats") "Th"))))
+  (testing "Empty string is invalid" (is (= (parse-gridref "") nil)))
+  (testing "Junk grid ref - no chars is invalid" (is (= (parse-gridref "23") nil)))
+  (testing "Junk grid ref - one char is invalid" (is (= (parse-gridref "S23") nil)))
+; (test-parse-gridref)
+
+(deftest test-parse-coord
+  (testing "Space seperated ints" (is (= (parse-coord "123456 123456") [123456 123456])))
+  (testing "Space seperated floats (decimals are ignored)" (is (= (parse-coord "123456.0 123456.0") [123456 123456])))
+  (testing "Square brackets are fine" (is (= (parse-coord "[123456 654321]") [123456 654321])))
+  (testing "Comma seperated" (is (= (parse-coord "123456,654321") [123456 654321])))
+  (testing "Comma and space seperated" (is (= (parse-coord "123456, 654321") [123456 654321])))
+  (testing "Crazy comma and space seperated" (is (= (parse-coord "123456 , , 654321") [123456 654321])))
+  (testing "Junk coord is invalid" (is (= (parse-coord "This is invalid 23 23") nil))))
+; (test-parse-coord)
+
 (deftest test-dispatch-cli
   (testing "Just letters are acceptable" (is (not (= (dispatch-cli {} ["SO"]) nil) )))
   (testing "Letters and numbers are acceptable" (is (not (= (dispatch-cli {} ["SO12"]) nil) )))
