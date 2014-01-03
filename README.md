@@ -34,18 +34,17 @@ or
 
 Using the standalone jar:
 
-    $ java -jar gridref-0.1.0-standalone.jar <gridref>
+    $ java -jar gridref.jar <gridref>
 
 or
 
-    $ java -jar gridref-0.1.0-standalone.jar [--figures=<n>] <coordinate>
+    $ java -jar gridref.jar [--figures=<n>] <coordinate>
 
 For full usage and examples see the file ./resources/cli-usage.
 
 ## Todo
 
 * Exit with 1 on error
-* Shell script to alias as gridref?
 * Input and output in WTK or GeoJSON?
 * Handle NE, SW etc. suffixes?
 

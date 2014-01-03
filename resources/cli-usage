@@ -2,8 +2,8 @@ Convert an alpha numeric Ordnance Survey grid reference to easting and northing 
 
 Usage:
 
-  java -jar gridref-0.1.0-standalone.jar <gridref>
-  java -jar gridref-0.1.0-standalone.jar [--figures=<n>] <coordinate>
+  java -jar gridref.jar <gridref>
+  java -jar gridref.jar [--figures=<n>] <coordinate>
 
 When - is passed instead of a <gridref> or <coordinate> read from standard input.
 
@@ -15,7 +15,7 @@ Examples:
 
 Convert the grid reference for the Tower of London to British National Grid coordinate pair:
 
-    java -jar gridref-0.1.0-standalone.jar TQ336805
+    java -jar gridref.jar TQ336805
 
 Will output:
 
@@ -23,7 +23,7 @@ Will output:
 
 Convert the BNG coordinate pair for the Tower of London to a 6 figure gird reference:
 
-    java -jar gridref-0.1.0-standalone.jar --figures=6 "533600 180500"
+    java -jar gridref.jar --figures=6 "533600 180500"
 
 Will output:
 
