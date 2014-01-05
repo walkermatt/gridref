@@ -144,6 +144,25 @@
   (if-let [match (re-find coord-re coord)]
     (map to-int (drop 1 match))))
 
+(defn nearest-even
+  "Return the nearest even number to n, rounds down"
+  [n]
+  (int (* (math/floor (/ n 2)) 2)))
+
+(defn between
+  [lower upper n]
+  "If n is less than lower return lower, if n is greater than upper return
+  upper, otherwise return n"
+  (min upper (max lower n)))
+
+(defn parse-figures
+  "Parses a string representing the number of figures in a grid reference,
+  defaults to 10 if the number can't be parsed"
+  [figures]
+  (try (int (let [n (Float/parseFloat figures)]
+        (nearest-even (between 0 10 n))))
+         (catch Exception e 10)))
+
 (defn dispatch-cli
   [options args]
   (let [arg (if (nil? args) "" (first args))]
@@ -156,7 +175,7 @@
 (def cli-options
    [["-f" "--figures <n>" "Number of figures to include in grid reference, an even number from 0 to 10"
      :default 10
-     :parse-fn #(to-int %)
+     :parse-fn parse-figures
      :validate [#(and (>= % 0) (<= % 10) (= (mod % 2) 0))]]
     ["-h" "--help"]])
 

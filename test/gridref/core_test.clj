@@ -262,6 +262,43 @@
   (testing "Junk coord is invalid" (is (= (parse-coord "This is invalid 23 23") nil))))
 ; (test-parse-coord)
 
+(deftest test-nearest-even
+    (testing "0" (is (= (nearest-even 0) 0)))
+    (testing "1" (is (= (nearest-even 1) 0)))
+    (testing "2" (is (= (nearest-even 2) 2)))
+    (testing "3" (is (= (nearest-even 3) 2)))
+    (testing "4" (is (= (nearest-even 4) 4)))
+    (testing "5" (is (= (nearest-even 5) 4)))
+    (testing "5.9" (is (= (nearest-even 5.9) 4)))
+    (testing "6" (is (= (nearest-even 6) 6)))
+    (testing "7" (is (= (nearest-even 7) 6)))
+    (testing "8" (is (= (nearest-even 8) 8)))
+    (testing "9" (is (= (nearest-even 9) 8)))
+    (testing "10" (is (= (nearest-even 10) 10))))
+(test-nearest-even)
+
+(deftest test-between
+  (testing "5 is between 0 & 10" (= (between 0 10 5) 5))
+  (testing "0 is between 0 & 10" (= (between 0 10 0) 0))
+  (testing "10 is between 0 & 10" (= (between 0 10 10) 10))
+  (testing "-1 is not between 0 & 10 (round up)" (= (between 0 10 -1) 0))
+  (testing "11 is not between 0 & 10 (round down)" (= (between 0 10 11) 10))
+  (testing "1 is between -5 & 5" (= (between -5 5 1) 1))
+  (testing "-6 is not between -5 & 5" (= (between -5 5 -6) -5))
+  (testing "6 is not between -5 & 5" (= (between -5 5 6) 5)))
+; (test-between)
+
+(deftest test-parse-figures
+  (testing "Empty string" (is (= (parse-figures "") 10)))
+  (testing "Junk string" (is (= (parse-figures "foo") 10)))
+  (testing "Int" (is (= (parse-figures "2") 2)))
+  (testing "Float" (is (= (parse-figures "2.0") 2)))
+  (testing "Round to nearest even number" (is (= (parse-figures "3.0") 2)))
+  (testing "Round to nearest even number" (is (= (parse-figures "5.0") 4)))
+  (testing "< 0 is rounded up to 0" (is (= (parse-figures "-1") 0)))
+  (testing "> 10 is rounded down to 10" (is (= (parse-figures "20") 10))))
+; (test-parse-figures)
+
 (deftest test-dispatch-cli
   (testing "Just letters are acceptable" (is (not (= (dispatch-cli {} ["SO"]) nil) )))
   (testing "Letters and numbers are acceptable" (is (not (= (dispatch-cli {} ["SO12"]) nil) )))
