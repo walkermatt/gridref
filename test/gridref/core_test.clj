@@ -17,24 +17,44 @@
     (is (= (to-int "-1") -1))))
 ; (test-to-int)
 
-(deftest test-pad-tail
-  (testing "Empty string"
-    (is (== (pad-tail "") 0)))
-  (testing "Single digit"
-    (is (== (pad-tail "1") 10000)))
-  (testing "Two digits"
-    (is (== (pad-tail "12") 12000)))
-  (testing "Three digits"
-    (is (== (pad-tail "123") 12300)))
-  (testing "Four digits"
-    (is (== (pad-tail "1234") 12340)))
-  (testing "Five digits"
-    (is (== (pad-tail "12345") 12345)))
-  (testing "Six digits"
-    (is (== (pad-tail "123456") 12345)))
-  (testing "Pass a number"
-    (is (== (pad-tail 123456) 12345))))
-; (test-pad-tail)
+(deftest test-bearing2digit
+  (testing "N" (is (= (bearing2digit "N") "5")))
+  (testing "E" (is (= (bearing2digit "E") "5")))
+  (testing "S" (is (= (bearing2digit "S") "0")))
+  (testing "W" (is (= (bearing2digit "W") "0"))))
+; (test-bearing2digit)
+
+(deftest test-tail2n
+  (testing "nil nil" (is (= (tail2n nil nil) 0.0)))
+  (testing "0 nil" (is (= (tail2n "0" nil) 0.0)))
+  (testing "nil 0" (is (= (tail2n nil "0") 0.0)))
+  (testing "2E" (is (= (tail2n "2" "E") 25000.0)))
+  (testing "2W" (is (= (tail2n "2" "W") 20000.0)))
+  (testing "12345N" (is (= (tail2n "12345" "N") 12345.0)))
+  (testing "0N" (is (= (tail2n "0" "N") 5000.0)))
+  (testing "03N" (is (= (tail2n "03" "N") 3500.0)))
+  (testing "003N" (is (= (tail2n "003" "N") 350.0))))
+; (test-tail2n)
+
+(deftest test-partition-str
+  (testing "It works!"
+    (is (= (partition-str 1 [1 2]) ["1" "2"]))))
+; (test-partition-str)
+
+(deftest test-tail2coord
+  (testing "nil nil"
+    (is (= (tail2coord nil nil) [0.0 0.0])))
+  (testing "00SW"
+    (is (= (tail2coord "00" "SW") [0.0 0.0])))
+  (testing "00NE"
+    (is (= (tail2coord "00" "NE") [5000.0 5000.0])))
+  (testing "3344 nil"
+    (is (= (tail2coord "3344" nil) [33000.0 44000.0])))
+  (testing "34 SE"
+    (is (= (tail2coord "34" "SE") [35000.0 40000.0])))
+  (testing "34 NW"
+    (is (= (tail2coord "34" "NW") [30000.0 45000.0]))))
+; (test-tail2coord)
 
 (deftest test-pad-head
   (testing "Single digit"
@@ -145,6 +165,16 @@
     (is (= (gridref2coord "SV9178010372") [91780.0 10372.0])))
   (testing "Close to the origin of British National Grid"
     (is (= (gridref2coord "sv0239114892") [2391.0 14892.0])))
+  (testing "Figures and bearing"
+    (is (= (gridref2coord "ST32NE") [335000.0 125000.0])))
+  (testing "Bearing only"
+    (is (= (gridref2coord "STNE") [350000.0 150000.0])))
+  (testing "Zero figures and bearing"
+    (is (= (gridref2coord "ST00NE") [305000.0 105000.0])))
+  (testing "East"
+    (is (= (gridref2coord "STSE") [350000.0 100000.0])))
+  (testing "West"
+    (is (= (gridref2coord "STSW") [300000.0 100000.0])))
   (testing "Lowercase letters are fine"
     (is (= (gridref2coord "SV0239114892") [2391.0 14892.0])))
   (testing "Spaces between parts are fine"

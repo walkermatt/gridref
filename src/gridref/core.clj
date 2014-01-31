@@ -16,17 +16,14 @@
 (defn to-int [s]
   (Integer/parseInt s))
 
+(defn to-float [s]
+  (Float/parseFloat s))
+
 (defn pad-head
   "Pad the given number with leading zeros so it is 5 digits long. Accepts a
   string or number, expects whole integers, returns a string"
   [n]
   (format (str "%05d") n))
-
-(defn pad-tail
-  "Pad the given number with digits so it is 5 digits long. Accepts number,
-  expects a whole int, returns an int"
-  [n]
-  (to-int (apply str (take 5 (concat (str n) (repeat 5 "0"))))))
 
 ;; Grid reference to coord
 
@@ -68,21 +65,34 @@
         coord (offset2topright (char2offset minor) (offset2topright (char2offset major) major-origin major-cell-width) minor-cell-width)]
     (assoc coord 1 (- (get coord 1) minor-cell-width))))
 
+(defn bearing2digit
+  [bearing]
+  (get {"N" "5" "E" "5"} bearing "0"))
+
+(defn tail2n
+  [digit bearing]
+  (to-float (apply str (take 5 (concat digit (bearing2digit bearing) "0000")))))
+
+(defn partition-str
+  [n coll]
+  (map (partial apply str) (partition n coll)))
+
+(defn tail2coord
+  [digits bearing]
+  (let [digits (concat (partition-str (quot (count digits) 2) digits) [nil nil])
+        bearing (concat (reverse (partition-str 1 bearing)) [nil nil])]
+    (take 2 (map tail2n digits bearing))))
+
 (defn gridref2coord
   "Convert a british national grid reference to an easting & northing
   coordinate pair as a vector: [easting northing]"
   [grid]
-  (let [grid (string/replace grid " " "")
-        n (quot (- (count grid) 2) 2)]
-    (let [re (re-pattern (str "([a-zA-Z]{2})"
-                              (if (> n 0)
-                                (str "(\\d{" n "})(\\d{" n "})"))))]
-      ; Split the gridref into it's parts, head is the grid letters,
-      ; the tail is the numeric part which are set to 0 0 if not present
-      (if-let [parts (nthnext (re-matches re grid) 1)]
+  (let [grid (string/upper-case (string/replace grid " " ""))]
+      (if-let [parts (drop 1 (re-find #"([a-zA-Z]{2})(\d+)?([NSEW]{2})?" grid))]
         (let [alpha (first parts)
-              numeric (if (== (count parts) 3) (drop 1 parts) ["0" "0"])]
-          (into [] (map + (alpha2coord alpha) (map pad-tail numeric))))))))
+              digits (or (second parts) ["" ""])
+              bearing (or (last parts) ["" ""])]
+          (into [] (map + (alpha2coord alpha) (tail2coord digits bearing)))))))
 
 ;; Coordinate to grid reference
 
