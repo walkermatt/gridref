@@ -176,7 +176,7 @@
   (testing "West"
     (is (= (gridref2coord "STSW") [300000.0 100000.0])))
   (testing "Lowercase letters are fine"
-    (is (= (gridref2coord "SV0239114892") [2391.0 14892.0])))
+    (is (= (gridref2coord "sv0239114892") [2391.0 14892.0])))
   (testing "Spaces between parts are fine"
     (is (= (gridref2coord "SV 02391 14892") [2391.0 14892.0])))
   (testing "Invalid input returns nil"
@@ -280,10 +280,10 @@
 (deftest test-parse-gridref
   (testing "Valid 6 figure grid ref" (is (= (parse-gridref "ST12") "ST12")))
   (testing "Valid 6 figure grid ref with spaces" (is (= (parse-gridref "ST 1 2") "ST 1 2")))
-  (testing "First two letters" (is (= (parse-gridref "The internet is made of cats") "Th"))))
+  (testing "First two letters" (is (= (parse-gridref "The internet is made of cats") "Th")))
   (testing "Empty string is invalid" (is (= (parse-gridref "") nil)))
   (testing "Junk grid ref - no chars is invalid" (is (= (parse-gridref "23") nil)))
-  (testing "Junk grid ref - one char is invalid" (is (= (parse-gridref "S23") nil)))
+  (testing "Junk grid ref - one char is invalid" (is (= (parse-gridref "S23") nil))))
 ; (test-parse-gridref)
 
 (deftest test-parse-coord
