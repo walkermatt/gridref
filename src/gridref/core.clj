@@ -137,7 +137,7 @@
 
 ;; CLI
 
-(def gridref-re #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)?)")
+(def gridref-re #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)? ?(?:[neswNESW]{2})?)")
 (defn parse-gridref
   "Return a valid grid reference or nil"
   [gridref]

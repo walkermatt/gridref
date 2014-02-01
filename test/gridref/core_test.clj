@@ -167,6 +167,8 @@
     (is (= (gridref2coord "sv0239114892") [2391.0 14892.0])))
   (testing "Figures and bearing"
     (is (= (gridref2coord "ST32NE") [335000.0 125000.0])))
+  (testing "Figures and bearing with spaces"
+    (is (= (gridref2coord "ST 32 NE") [335000.0 125000.0])))
   (testing "Bearing only"
     (is (= (gridref2coord "STNE") [350000.0 150000.0])))
   (testing "Zero figures and bearing"
@@ -281,6 +283,7 @@
   (testing "Valid 6 figure grid ref" (is (= (parse-gridref "ST12") "ST12")))
   (testing "Valid 6 figure grid ref with spaces" (is (= (parse-gridref "ST 1 2") "ST 1 2")))
   (testing "First two letters" (is (= (parse-gridref "The internet is made of cats") "Th")))
+  (testing "With a bearing" (is (= (parse-gridref "ST 12 NE") "ST 12 NE")))
   (testing "Empty string is invalid" (is (= (parse-gridref "") nil)))
   (testing "Junk grid ref - no chars is invalid" (is (= (parse-gridref "23") nil)))
   (testing "Junk grid ref - one char is invalid" (is (= (parse-gridref "S23") nil))))
@@ -338,6 +341,7 @@
   (testing "Letters and numbers are acceptable" (is (not (= (dispatch-cli {} ["SO12"]) nil) )))
   (testing "Lowercase letters are acceptable" (is (not (= (dispatch-cli {} ["so"]) nil) )))
   (testing "Spaces in grid refs are acceptable" (is (not (= (dispatch-cli {} ["SO 12 34"]) nil) )))
+  (testing "Bearing" (is (not (= (dispatch-cli {} ["SO 12 34 NE"]) nil) )))
   (testing "Coords with square brackets are acceptable" (is (not (= (dispatch-cli {:figures 6} ["[123456 654321]"]) nil) )))
   (testing "Coords without square brackets are acceptable" (is (not (= (dispatch-cli {:figures 6} ["123456 654321"]) nil) )))
   (testing "Coords with decimals are acceptable" (is (not (= (dispatch-cli {:figures 6} ["123456.00 654321.00"]) nil) ))))
