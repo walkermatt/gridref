@@ -178,7 +178,11 @@
   (testing "Lowercase letters are fine"
     (is (= (gridref2coord "SV0239114892") [2391.0 14892.0])))
   (testing "Spaces between parts are fine"
-    (is (= (gridref2coord "SV 02391 14892") [2391.0 14892.0]))))
+    (is (= (gridref2coord "SV 02391 14892") [2391.0 14892.0])))
+  (testing "Invalid input returns nil"
+    (is (= (gridref2coord "---") nil)))
+  (testing "Empty string returns nil"
+    (is (= (gridref2coord "") nil))))
 ; (test-gridref2coord)
 
 ;; Coordinate to grid reference

@@ -88,11 +88,9 @@
   coordinate pair as a vector: [easting northing]"
   [grid]
   (let [grid (string/upper-case (string/replace grid " " ""))]
-      (if-let [parts (drop 1 (re-find #"([a-zA-Z]{2})(\d+)?([NSEW]{2})?" grid))]
-        (let [alpha (first parts)
-              digits (or (second parts) ["" ""])
-              bearing (or (last parts) ["" ""])]
-          (into [] (map + (alpha2coord alpha) (tail2coord digits bearing)))))))
+    (let [parts (drop 1 (re-find #"([A-Z]{2})(\d+)?([NSEW]{2})?" grid))]
+      (if-let [alpha (first parts)]
+          (into [] (map + (alpha2coord alpha) (tail2coord (second parts) (last parts))))))))
 
 ;; Coordinate to grid reference
 
