@@ -7,6 +7,7 @@ Valid input includes:
     ST                    => [300000.0 100000.0] (The bottom right coordinate of the ST grid square)
     NN1665071250          => [216650.0 771250.0] (The Ben Nevis)
     SU387148              => [438700.0 114800.0] (The Ordnance Survey offices in Southampton)
+    SU31NE                => [435000.0 115000.0] (The 5 km square of the OS office)
     TQ336805              => [533600.0 180500.0] (The Tower of London)
 
     "[300000.0 100000.0]" => ST (The bottom right coordinate of the ST grid square)
@@ -46,7 +47,6 @@ For full usage and examples see the file ./resources/cli-usage.
 
 * Exit with 1 on error
 * Input and output in WTK or GeoJSON?
-* Handle NE, SW etc. suffixes?
 
 ## References
 
