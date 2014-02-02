@@ -312,7 +312,7 @@
     (testing "8" (is (= (nearest-even 8) 8)))
     (testing "9" (is (= (nearest-even 9) 8)))
     (testing "10" (is (= (nearest-even 10) 10))))
-(test-nearest-even)
+; (test-nearest-even)
 
 (deftest test-between
   (testing "5 is between 0 & 10" (= (between 0 10 5) 5))

@@ -43,6 +43,14 @@ or
 
 For full usage and examples see the file ./resources/cli-usage.
 
+## Installation
+
+'gridref` is available as a Maven artifact from [Clojars](http://clojars.org/gridref). To use `gridref` as a library in a Clojure project you can add this in your `project.clj` with leiningen:
+
+```clojure
+[gridref "0.1.3"]
+```
+
 ## Todo
 
 * Exit with 1 on error
