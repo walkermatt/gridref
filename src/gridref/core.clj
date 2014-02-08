@@ -83,14 +83,22 @@
         bearing (concat (reverse (partition-str 1 bearing)) [nil nil])]
     (take 2 (map tail2n digits bearing))))
 
+(def gridref-re #"(^[A-Z]{2}(?: ?\d+ ?\d+)? ?(?:[NESW]{2})?)")
+(defn parse-gridref
+  "Return a valid grid reference or nil"
+  [gridref]
+  (let [gridref (string/upper-case (string/replace gridref " " ""))]
+    (if-let [match (re-find gridref-re gridref)]
+      (second match))))
+
 (defn gridref2coord
   "Convert a british national grid reference to an easting & northing
   coordinate pair as a vector: [easting northing]"
   [grid]
-  (let [grid (string/upper-case (string/replace grid " " ""))]
+  (if-let [grid (parse-gridref grid)]
     (let [parts (drop 1 (re-find #"([A-Z]{2})(\d+)?([NSEW]{2})?" grid))]
       (if-let [alpha (first parts)]
-          (into [] (map + (alpha2coord alpha) (tail2coord (second parts) (last parts))))))))
+        (into [] (map + (alpha2coord alpha) (tail2coord (second parts) (last parts))))))))
 
 ;; Coordinate to grid reference
 
@@ -136,13 +144,6 @@
     (str (coord2alpha coord) (coord2digits coord figures)))
 
 ;; CLI
-
-(def gridref-re #"(^[a-zA-Z]{2}(?: ?\d+ ?\d+)? ?(?:[neswNESW]{2})?)")
-(defn parse-gridref
-  "Return a valid grid reference or nil"
-  [gridref]
-  (if-let [match (re-find gridref-re gridref)]
-    (second match)))
 
 (def coord-re #"^\[?(\d+)(?:\.\d+)?[ ,]+(\d+)(?:\.\d+)?\]?")
 (defn parse-coord

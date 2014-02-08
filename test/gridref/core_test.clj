@@ -281,9 +281,9 @@
 
 (deftest test-parse-gridref
   (testing "Valid 6 figure grid ref" (is (= (parse-gridref "ST12") "ST12")))
-  (testing "Valid 6 figure grid ref with spaces" (is (= (parse-gridref "ST 1 2") "ST 1 2")))
-  (testing "First two letters" (is (= (parse-gridref "The internet is made of cats") "Th")))
-  (testing "With a bearing" (is (= (parse-gridref "ST 12 NE") "ST 12 NE")))
+  (testing "Valid 6 figure grid ref with spaces" (is (= (parse-gridref "ST 1 2") "ST12")))
+  (testing "First two letters" (is (= (parse-gridref "The internet is made of cats") "TH")))
+  (testing "With a bearing" (is (= (parse-gridref "ST 12 NE") "ST12NE")))
   (testing "Empty string is invalid" (is (= (parse-gridref "") nil)))
   (testing "Junk grid ref - no chars is invalid" (is (= (parse-gridref "23") nil)))
   (testing "Junk grid ref - one char is invalid" (is (= (parse-gridref "S23") nil))))
