@@ -151,7 +151,7 @@
   vector [easting northing] or nil"
   [coord]
   (if-let [match (re-find coord-re coord)]
-    (vec (map to-int (drop 1 match)))))
+    (vec (map to-float (drop 1 match)))))
 
 (defn nearest-even
   "Return the nearest even number to n, rounds down"

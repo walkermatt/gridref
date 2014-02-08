@@ -290,14 +290,14 @@
 ; (test-parse-gridref)
 
 (deftest test-parse-coord
-  (testing "Space seperated ints" (is (= (parse-coord "123456 123456") [123456 123456])))
-  (testing "Space seperated floats (decimals are ignored)" (is (= (parse-coord "123456.0 123456.0") [123456 123456])))
-  (testing "Square brackets are fine" (is (= (parse-coord "[123456 654321]") [123456 654321])))
-  (testing "Comma seperated" (is (= (parse-coord "123456,654321") [123456 654321])))
-  (testing "Comma and space seperated" (is (= (parse-coord "123456, 654321") [123456 654321])))
-  (testing "Crazy comma and space seperated" (is (= (parse-coord "123456 , , 654321") [123456 654321])))
+  (testing "Space seperated ints" (is (= (parse-coord "123456 123456") [123456.0 123456.0])))
+  (testing "Space seperated floats" (is (= (parse-coord "123456.0 123456.0") [123456.0 123456.0])))
+  (testing "Square brackets are fine" (is (= (parse-coord "[123456 654321]") [123456.0 654321.0])))
+  (testing "Comma seperated" (is (= (parse-coord "123456,654321") [123456.0 654321.0])))
+  (testing "Comma and space seperated" (is (= (parse-coord "123456, 654321") [123456.0 654321.0])))
+  (testing "Crazy comma and space seperated" (is (= (parse-coord "123456 , , 654321") [123456.0 654321.0])))
   (testing "Junk coord is invalid" (is (= (parse-coord "This is invalid 23 23") nil))))
-; (test-parse-coord)
+(test-parse-coord)
 
 (deftest test-nearest-even
     (testing "0" (is (= (nearest-even 0) 0)))
