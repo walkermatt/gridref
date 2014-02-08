@@ -48,7 +48,7 @@ For full usage and examples see the file ./resources/cli-usage.
 `gridref` is available as a Maven artifact from [Clojars](http://clojars.org/gridref). To use `gridref` as a library in a Clojure project you can add this in your `project.clj` with leiningen:
 
 ```clojure
-[gridref "0.1.3"]
+[gridref "0.1.4"]
 ```
 
 ## Todo
