@@ -197,18 +197,27 @@
   (str "The following errors where found:" \newline (string/join \newline e)))
 
 (defn process-cli
+  "Process cli args returning a map of {:status <code> :output <string>}"
   [args]
-    (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
-      (cond
-        (:help options) (usage-msg summary)
-        (not= (count arguments) 1) (usage-msg summary)
-        errors (error-msg errors)
-        :else (or (dispatch-cli options arguments) (usage-msg summary)))))
+  (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
+    (cond
+      (:help options) {:status 0 :output (usage-msg summary)}
+      (not= (count arguments) 1) {:status 1 :output (usage-msg summary)}
+      errors {:status 1 :output (error-msg errors)}
+      :else (or (if-let [result (dispatch-cli options arguments)]
+                  {:status 0 :output result})
+                {:status 1 :output (usage-msg summary)}))))
 
 (defn -main
-  "Passed an OS grid reference as an argument will return the eastings and northings."
+  "Main entry point of cli app, handles the dirty work of printing output"
   [& args]
-  (println (process-cli args)))
+  (let [{:keys [status output]} (process-cli args)]
+    (if (not= status 0)
+      (do
+        (binding [*out* *err*]
+          (println output))
+        (System/exit status))
+      (println output))))
 
 ;   col0   col1   col2   col3   col4
 ;   0      1      2      3      4      -   row0

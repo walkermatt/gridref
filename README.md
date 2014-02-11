@@ -53,7 +53,6 @@ For full usage and examples see the file ./resources/cli-usage.
 
 ## Todo
 
-* Exit with 1 on error
 * Input and output in WTK or GeoJSON?
 
 ## References
