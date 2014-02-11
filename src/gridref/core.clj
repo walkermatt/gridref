@@ -63,7 +63,7 @@
   [r]
   (let [[major minor] r
         coord (offset2topright (char2offset minor) (offset2topright (char2offset major) major-origin major-cell-width) minor-cell-width)]
-    (assoc coord 1 (- (get coord 1) minor-cell-width))))
+    (update-in coord [1] #(- % minor-cell-width))))
 
 (defn bearing2digit
   [bearing]
