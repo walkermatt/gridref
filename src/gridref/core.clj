@@ -141,7 +141,7 @@
 (defn coord2gridref
   "Get a five figure grid reference for a given coordinate."
   [coord figures]
-    (str (coord2alpha coord) (coord2digits coord figures)))
+  (str (coord2alpha coord) (coord2digits coord figures)))
 
 ;; CLI
 
@@ -169,8 +169,8 @@
   defaults to 10 if the number can't be parsed"
   [figures]
   (try (int (let [n (Float/parseFloat figures)]
-        (nearest-even (between 0 10 n))))
-         (catch Exception e 10)))
+              (nearest-even (between 0 10 n))))
+       (catch Exception e 10)))
 
 (defn dispatch-cli
   [options args]
@@ -182,15 +182,15 @@
           (coord2gridref coord (:figures options)))))))
 
 (def cli-options
-   [["-f" "--figures <n>" "Number of figures to include in grid reference, an even number from 0 to 10"
-     :default 10
-     :parse-fn parse-figures
-     :validate [#(and (>= % 0) (<= % 10) (= (mod % 2) 0))]]
-    ["-h" "--help"]])
+  [["-f" "--figures <n>" "Number of figures to include in grid reference, an even number from 0 to 10"
+    :default 10
+    :parse-fn parse-figures
+    :validate [#(and (>= % 0) (<= % 10) (= (mod % 2) 0))]]
+   ["-h" "--help"]])
 
 (defn usage-msg
- [options-summary]
- (format (slurp (io/resource "cli-usage")) options-summary))
+  [options-summary]
+  (format (slurp (io/resource "cli-usage")) options-summary))
 
 (defn error-msg
   [e]
