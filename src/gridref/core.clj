@@ -113,9 +113,9 @@
   cellwidth (both in meters) for the given easting & northing coordinate pair.
   Called once to get the first grid letter and again to get the second."
   [coord origin cellwidth]
-  (let [[e w] (map #(- % (mod % cellwidth)) coord)]
+  (let [[e n] (map #(- % (mod % cellwidth)) coord)]
     [(math/floor (/ (- e (first origin)) cellwidth))
-     (math/floor (/ (- (second origin) w minor-cell-width) cellwidth))]))
+     (math/floor (/ (- (second origin) n minor-cell-width) cellwidth))]))
 
 (defn offset2cell
   "Get the number of the cell in a five by five grid counting from left to
