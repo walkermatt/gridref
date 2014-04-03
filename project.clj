@@ -8,5 +8,7 @@
                  [org.clojure/tools.trace "0.7.6"]
                  [org.clojure/tools.cli "0.3.0"]]
   :main gridref.core
+  :profiles {:uberjar {:aot :all}}
   :uberjar-name "gridref.jar"
-  :profiles {:uberjar {:aot :all}})
+  :plugins [[lein-bin "0.3.4"]]
+  :bin {:name "gridref"})

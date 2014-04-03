@@ -17,33 +17,31 @@ Valid input includes:
 
 The `gridref.core` namespace defines the functions `gridref2coord` and `coord2gridref` that support converting between a grid reference and coordinate pair.
 
-## Build
+## CLI
 
-Using [Leiningen](https://github.com/technomancy/leiningen):
+### Build
 
-    $ lein uberjar
+Run the following to build a standalone executable `target/gridref` using [Leiningen](https://github.com/technomancy/leiningen):
 
-## CLI Usage
+    $ lein bin
 
-Using the lein run command:
+### CLI Usage
 
-    $ lein run <gridref>
+Using the standalone executable:
 
-or
-
-    $ lein run [--figures=<n>] <coordinate>
-
-Using the standalone jar:
-
-    $ java -jar gridref.jar <gridref>
+    $ gridref <gridref>
 
 or
 
-    $ java -jar gridref.jar [--figures=<n>] <coordinate>
+    $ gridref [--figures=<n>] <coordinate>
 
-For full usage and examples see the file ./resources/cli-usage.
+For full usage and examples see the file `resources/cli-usage`.
 
-## Installation
+## Clojure Library
+
+The `gridref.core` namespace defines the functions `gridref2coord` and `coord2gridref` that support converting between a grid reference and coordinate pair. There are also functions to parse input `parse-gridref` and `parse-coord` which can help with cleaning up input.
+
+### Installation
 
 `gridref` is available as a Maven artifact from [Clojars](http://clojars.org/gridref). To use `gridref` as a library in a Clojure project you can add this in your `project.clj` with leiningen:
 
