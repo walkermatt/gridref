@@ -33,7 +33,7 @@ or
 
     $ gridref [--figures=<n>] <coordinate>
 
-For full usage and examples see the file `resources/cli-usage`.
+For full usage and examples see the file [`resources/cli-usage`](resources/cli-usage).
 
 ## Clojure Library
 
