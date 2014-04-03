@@ -1,6 +1,6 @@
 # GridRef
 
-Clojure CLI and functions to convert an alpha numeric Ordnance Survey grid reference to easting / northing or easting / northing to a grid reference.
+Clojure CLI and library to convert an alpha numeric Ordnance Survey grid reference to easting / northing or easting / northing to a grid reference.
 
 Valid input includes:
 
@@ -14,8 +14,6 @@ Valid input includes:
     "216650.0 771250.0"   => NN1665071250 (The Ben Nevis)
     "[438700 114800]"     => SU387148 (The Ordnance Survey offices in Southampton)
     "533600 180500"       => TQ3360080500 (The Tower of London)
-
-The `gridref.core` namespace defines the functions `gridref2coord` and `coord2gridref` that support converting between a grid reference and coordinate pair.
 
 ## CLI
 
@@ -40,6 +38,26 @@ For full usage and examples see the file `resources/cli-usage`.
 ## Clojure Library
 
 The `gridref.core` namespace defines the functions `gridref2coord` and `coord2gridref` that support converting between a grid reference and coordinate pair. There are also functions to parse input `parse-gridref` and `parse-coord` which can help with cleaning up input.
+
+### Usage
+
+    (use 'gridref.core)
+
+    ; Parsing input
+
+    (gridref.core/parse-gridref "su 387 148")
+    => "SU387148"
+
+    (gridref.core/parse-coord "216650.0 771250.0")
+    => [216650.0 771250.0]
+
+    ; Conversion
+
+    (gridref.core/gridref2coord "SU387148")
+    => [438700.0 114800.0]
+
+    (gridref.core/coord2gridref [438700.0 114800.0] 6)
+    => "SU387148"
 
 ### Installation
 
