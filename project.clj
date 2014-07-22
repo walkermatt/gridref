@@ -7,7 +7,7 @@
                  [org.clojure/math.numeric-tower "0.0.2"]
                  [org.clojure/tools.trace "0.7.6"]
                  [org.clojure/tools.cli "0.3.0"]]
-  :main gridref.core
+  :main gridref.cli
   :profiles {:uberjar {:aot :all}}
   :uberjar-name "gridref.jar"
   :plugins [[lein-bin "0.3.4"]]

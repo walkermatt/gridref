@@ -1,6 +1,8 @@
 (ns gridref.core-test
   (:require [clojure.test :refer :all]
-            [gridref.core :refer :all]))
+            [gridref.core :refer :all]
+            [gridref.cli :refer :all]
+            [gridref.util :refer :all]))
 
 ;; Utility
 

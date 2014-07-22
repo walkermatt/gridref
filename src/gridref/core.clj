@@ -2,8 +2,7 @@
   (:require [clojure.string :as string]
             [clojure.math.numeric-tower :as math]
             [clojure.tools.trace :as trace]
-            [clojure.tools.cli :refer [parse-opts]]
-            [clojure.java.io :as io])
+            [gridref.util :as util])
   (:gen-class))
 
 ; Global vars
@@ -12,18 +11,6 @@
 (def minor-cell-width 100000.0)
 
 ;; Utility
-
-(defn to-int [s]
-  (Integer/parseInt s))
-
-(defn to-float [s]
-  (Float/parseFloat s))
-
-(defn pad-head
-  "Pad the given number with leading zeros so it is 5 digits long. Accepts a
-  string or number, expects whole integers, returns a string"
-  [n]
-  (format (str "%05d") n))
 
 ;; Grid reference to coord
 
@@ -71,7 +58,7 @@
 
 (defn tail2n
   [digit bearing]
-  (to-float (apply str (take 5 (concat digit (bearing2digit bearing) "0000")))))
+  (util/to-float (apply str (take 5 (concat digit (bearing2digit bearing) "0000")))))
 
 (defn partition-str
   [n coll]
@@ -136,7 +123,7 @@
   "Get the trailing digits for an alpha numberic grid reference from a coordinate pair"
   [coord figures]
   (let [n (/ figures 2)]
-    (apply str (map #(apply str (take n (pad-head (int (mod % minor-cell-width))))) coord))))
+    (apply str (map #(apply str (take n (util/pad-head (int (mod % minor-cell-width))))) coord))))
 
 (defn coord2gridref
   "Get a five figure grid reference for a given coordinate."
@@ -151,73 +138,7 @@
   vector [easting northing] or nil"
   [coord]
   (if-let [match (re-find coord-re coord)]
-    (vec (map to-float (drop 1 match)))))
-
-(defn nearest-even
-  "Return the nearest even number to n, rounds down"
-  [n]
-  (int (* (math/floor (/ n 2)) 2)))
-
-(defn between
-  [lower upper n]
-  "If n is less than lower return lower, if n is greater than upper return
-  upper, otherwise return n"
-  (min upper (max lower n)))
-
-(defn parse-figures
-  "Parses a string representing the number of figures in a grid reference,
-  defaults to 10 if the number can't be parsed"
-  [figures]
-  (try (int (let [n (Float/parseFloat figures)]
-              (nearest-even (between 0 10 n))))
-       (catch Exception e 10)))
-
-(defn dispatch-cli
-  [options args]
-  (let [arg (if (nil? args) "" (first args))]
-    (let [arg (if (= arg "-") (read-line) arg)]
-      (if-let [gridref (parse-gridref arg)]
-        (gridref2coord gridref)
-        (if-let [coord (parse-coord arg)]
-          (coord2gridref coord (:figures options)))))))
-
-(def cli-options
-  [["-f" "--figures <n>" "Number of figures to include in grid reference, an even number from 0 to 10"
-    :default 10
-    :parse-fn parse-figures
-    :validate [#(and (>= % 0) (<= % 10) (= (mod % 2) 0))]]
-   ["-h" "--help"]])
-
-(defn usage-msg
-  [options-summary]
-  (format (slurp (io/resource "cli-usage")) options-summary))
-
-(defn error-msg
-  [e]
-  (str "The following errors where found:" \newline (string/join \newline e)))
-
-(defn process-cli
-  "Process cli args returning a map of {:status <code> :output <string>}"
-  [args]
-  (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
-    (cond
-      (:help options) {:status 0 :output (usage-msg summary)}
-      (not= (count arguments) 1) {:status 1 :output (usage-msg summary)}
-      errors {:status 1 :output (error-msg errors)}
-      :else (or (if-let [result (dispatch-cli options arguments)]
-                  {:status 0 :output result})
-                {:status 1 :output (usage-msg summary)}))))
-
-(defn -main
-  "Main entry point of cli app, handles the dirty work of printing output"
-  [& args]
-  (let [{:keys [status output]} (process-cli args)]
-    (if (not= status 0)
-      (do
-        (binding [*out* *err*]
-          (println output))
-        (System/exit status))
-      (println output))))
+    (vec (map util/to-float (drop 1 match)))))
 
 ;   col0   col1   col2   col3   col4
 ;   0      1      2      3      4      -   row0
