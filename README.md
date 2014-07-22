@@ -64,7 +64,7 @@ The `gridref.core` namespace defines the functions `gridref2coord` and `coord2gr
 `gridref` is available as a Maven artifact from [Clojars](http://clojars.org/gridref). To use `gridref` as a library in a Clojure project you can add this in your `project.clj` with leiningen:
 
 ```clojure
-[gridref "0.1.4"]
+[gridref "0.1.5"]
 ```
 
 ## Todo
